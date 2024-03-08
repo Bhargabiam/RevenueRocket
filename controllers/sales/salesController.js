@@ -10,6 +10,8 @@ import {
   processToSale,
 } from "../../db/sales/salesQuery.js";
 import { customerByMobile } from "../../db/customer/customerQuery.js";
+import { checkSchema } from "express-validator";
+import saleFormSchema from "../../validations/saleForm.validation.js";
 
 const processDataByMobile = async (req, res) => {
   const mobile = req.query.mobile;
@@ -47,7 +49,7 @@ const processDataById = async (req, res) => {
 };
 
 const addNewProcessData = async (req, res) => {
-  const customerId = req.params.id;
+  const customerId = req.params.customerId;
   const formData = req.body;
   try {
     const data = await addProcessData(customerId, formData);
@@ -61,4 +63,87 @@ const addNewProcessData = async (req, res) => {
   }
 };
 
-export { processDataByMobile, processDataById, addNewProcessData };
+const patchProcessData = async (req, res) => {
+  const customerId = req.params.processId;
+  const formData = req.body;
+  try {
+    const data = await editProcessData(customerId, formData);
+    if (data.length === 0) {
+      res.status(400).json({ error: "Bad Request - Form data not submitted" });
+    } else {
+      res.status(200).json({ message: "Process data updated sucsesfully" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const processDisable = async (req, res) => {
+  const processId = req.params.processId;
+  try {
+    const response = await deleteProcess(processId);
+    if (response === 0) {
+      res.status(400).json({ error: "Something Was wrong" });
+    } else {
+      res.status(200).json({ message: "Process data deleted sucsesfully" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const newSaleData = async (req, res) => {
+  const customerId = req.params.customerId;
+  const formData = req.body;
+  try {
+    checkSchema(saleFormSchema);
+    const response = await addSaleData(customerId, formData);
+    if (response.length == 0) {
+      res.status(400).json({ error: "Bad Request - Form data not submitted" });
+    } else {
+      res.status(200).json({ submittedData: response });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const processLimitedData = async (req, res) => {
+  const processId = req.params.processId;
+  try {
+    const response = await processLimitData(processId);
+    if (response.length == 0) {
+      res.status(400).json({ error: "No Data Found" });
+    } else {
+      res.status(200).json({ inprocessData: response });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const inprocessToSale = async (req, res) => {
+  const processId = req.params.processId;
+  const formData = req.body;
+  try {
+    const response = await processToSale(processId, formData);
+    if (response.length == 0) {
+      res.status(400).json({ error: "No Data Found" });
+    } else {
+      res.status(200).json({ inprocessData: response });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export {
+  processDataByMobile,
+  processDataById,
+  addNewProcessData,
+  patchProcessData,
+  processDisable,
+  newSaleData,
+  processLimitedData,
+  inprocessToSale,
+};

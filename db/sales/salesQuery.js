@@ -60,7 +60,7 @@ const visitedDate = async (id) => {
 };
 
 // inprocess patch requests
-const editProcessData = async (id, data) => {
+const editProcessData = async (processId, data) => {
   const {
     sec_mobile,
     metal_type,
@@ -76,7 +76,7 @@ const editProcessData = async (id, data) => {
     inprocess,
   } = data;
   let visitDates = `${sale_date} - Prev. Visit date- `;
-  visitDates += await visitedDate(id);
+  visitDates += await visitedDate(processId);
   const query = `UPDATE customer_in_process SET second_mob = $1, metal_type = $2, executive_id = $3, associate_id = $4, product_id =$5, fm_name =$6, current_status = $7, non_conversion = $8, remarks =$9, followup_date = $10, process_status = $11, visit_dates = $12 WHERE process_id = $13 RETURNING *;`;
   const { rows } = await pool.query(query, [
     sec_mobile,
@@ -91,20 +91,20 @@ const editProcessData = async (id, data) => {
     follwup_date,
     inprocess,
     visitDates,
-    id,
+    processId,
   ]);
   return rows;
 };
 
 //  Delete inprocess record using process_id
-const deleteProcess = async (id) => {
+const deleteProcess = async (processId) => {
   const query = `UPDATE customer_in_process SET process_status = false WHERE process_id = $1`;
-  const { rows } = await pool.query(query, [id]);
-  return rows;
+  const { rowCount } = await pool.query(query, [processId]);
+  return rowCount;
 };
 
 // Add New Sale Data
-const addSaleData = async (id, data) => {
+const addSaleData = async (customerId, data) => {
   const {
     sec_mobile,
     customer_type,
@@ -122,7 +122,7 @@ const addSaleData = async (id, data) => {
   } = data;
   const query = `INSERT INTO sales_data (customer_id, second_mob, customer_type, metal_type, walkin_source, executive_id, associate_id, product_id, fm_name, current_status, non_conversion, remarks, sale_date, visit_dates, end_date, bill_number) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) RETURNING *;`;
   const { rows } = await pool.query(query, [
-    id,
+    customerId,
     sec_mobile,
     customer_type,
     metal_type,
@@ -141,7 +141,7 @@ const addSaleData = async (id, data) => {
   ]);
   return rows;
 };
-// get prcess data "customer_id, customer_type, walkin_source, sale_date, visit_dates"
+// get process data "customer_id, customer_type, walkin_source, sale_date, visit_dates"
 const processLimitData = async (processid) => {
   const query = `SELECT customer_id, customer_type, walkin_source, sale_date, visit_dates FROM customer_in_process WHERE process_id = $1`;
   const { rows } = await pool.query(query, [processid]);
@@ -149,7 +149,7 @@ const processLimitData = async (processid) => {
 };
 
 // add sale data from process Data;
-const processToSale = async (id, data) => {
+const processToSale = async (processId, data) => {
   const {
     sec_mobile,
     metal_type,
@@ -166,7 +166,7 @@ const processToSale = async (id, data) => {
   } = data;
   var visitDates = `${sale_date} - Prev. Visit date- `;
   const { customerId, customerType, walkinSource, visit_Dates, saleDate } =
-    await processLimitData(id);
+    await processLimitData(processId);
   visitDates += visit_Dates;
   const query = `INSERT INTO sales_data (customer_id, second_mob, customer_type, metal_type, walkin_source, executive_id, associate_id, product_id, fm_name, current_status, non_conversion, remarks, sale_date, visit_dates, end_date, bill_number) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) RETURNING *;`;
   const { rows } = await pool.query(query, [
