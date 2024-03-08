@@ -10,8 +10,6 @@ import {
   processToSale,
 } from "../../db/sales/salesQuery.js";
 import { customerByMobile } from "../../db/customer/customerQuery.js";
-import { checkSchema } from "express-validator";
-import saleFormSchema from "../../validations/saleForm.validation.js";
 
 const processDataByMobile = async (req, res) => {
   const mobile = req.query.mobile;
@@ -96,7 +94,6 @@ const newSaleData = async (req, res) => {
   const customerId = req.params.customerId;
   const formData = req.body;
   try {
-    checkSchema(saleFormSchema);
     const response = await addSaleData(customerId, formData);
     if (response.length == 0) {
       res.status(400).json({ error: "Bad Request - Form data not submitted" });
