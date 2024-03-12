@@ -29,9 +29,8 @@ const addProcessData = async (customerId, data) => {
     remarks,
     sale_date,
     follwup_date,
-    inprocess,
   } = data;
-  let query = `INSERT INTO customer_in_process (customer_id, second_mob, customer_type, metal_type, walkin_source, executive_id, associate_id, product_id, fm_name, current_status, non_conversion, remarks, sale_date, followup_date, visit_dates, process_status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) RETURNING *;`;
+  let query = `INSERT INTO customer_in_process (customer_id, second_mob, customer_type, metal_type, walkin_source, executive_id, associate_id, product_id, fm_name, current_status, non_conversion, remarks, sale_date, followup_date, visit_dates) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *;`;
   const { rows } = await pool.query(query, [
     customerId,
     sec_mobile,
@@ -48,7 +47,6 @@ const addProcessData = async (customerId, data) => {
     sale_date,
     follwup_date,
     sale_date,
-    inprocess,
   ]);
   return rows;
 };
@@ -73,11 +71,10 @@ const editProcessData = async (processId, data) => {
     remarks,
     sale_date,
     follwup_date,
-    inprocess,
   } = data;
   let visitDates = `${sale_date} - Prev. Visit date- `;
   visitDates += await visitedDate(processId);
-  const query = `UPDATE customer_in_process SET second_mob = $1, metal_type = $2, executive_id = $3, associate_id = $4, product_id =$5, fm_name =$6, current_status = $7, non_conversion = $8, remarks =$9, followup_date = $10, process_status = $11, visit_dates = $12 WHERE process_id = $13 RETURNING *;`;
+  const query = `UPDATE customer_in_process SET second_mob = $1, metal_type = $2, executive_id = $3, associate_id = $4, product_id =$5, fm_name =$6, current_status = $7, non_conversion = $8, remarks =$9, followup_date = $10, visit_dates = $11 WHERE process_id = $12 RETURNING *;`;
   const { rows } = await pool.query(query, [
     sec_mobile,
     metal_type,
@@ -89,7 +86,6 @@ const editProcessData = async (processId, data) => {
     non_conversion,
     remarks,
     follwup_date,
-    inprocess,
     visitDates,
     processId,
   ]);

@@ -1,33 +1,33 @@
-import { getUser, getUserByEmail, getUsers } from "../../db/user/userQuery.js";
+import { user, usersList, userByEmail } from "../../db/user/userQuery.js";
 import errorHandler from "../../middleware/error.js";
 
 const userList = async (req, res, next) => {
   console.log(req.sessionID);
   try {
-    let userList = await getUsers();
+    let userList = await usersList();
     res.status(200).json({ userList: userList });
   } catch (err) {
     next(err);
   }
 };
 
-const user = async (req, res, next) => {
-  let id = req.params.id;
+const getUser = async (req, res, next) => {
+  let userId = req.params.id;
   try {
-    let user = await getUser(id);
-    res.status(200).json({ user: user });
+    let result = await user(userId);
+    res.status(200).json({ user: result });
   } catch (err) {
     next(err);
   }
 };
 
-const userByEmail = async (req, res, next) => {
+const userEmail = async (req, res, next) => {
   let email = req.params.email;
   try {
-    let user = await getUser(email);
-    res.status(200).json({ user: user });
+    let result = await userByEmail(email);
+    res.status(200).json({ user: result });
   } catch (err) {
     next(err);
   }
 };
-export { userList };
+export { getUser, userList, userEmail };

@@ -64,10 +64,39 @@ const saleIdValidator = [
     next();
   },
 ];
+
+const executiveIdValidator = [
+  query("executiveId", "Invalid executive ID")
+    .trim()
+    .matches(/^EXUT_\d{6}_\d{4}$/),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];
+
+const productIdValidator = [
+  query("productId", "Invalid product ID")
+    .trim()
+    .matches(/^PROD_\d{6}_\d{4}$/),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];
+
 export {
   customerIdValidator,
   userIdValidator,
   processIdValidator,
   saleIdValidator,
   processIdQueryValidator,
+  executiveIdValidator,
+  productIdValidator,
 };

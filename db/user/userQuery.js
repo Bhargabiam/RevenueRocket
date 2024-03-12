@@ -1,21 +1,23 @@
 import pool from "../../config/db.js";
 
-const getUsers = async () => {
-  let query = "SELECT * FROM user_list";
+const usersList = async () => {
+  let query = "SELECT * FROM user_list WHERE user_status = true;";
   const { rows } = await pool.query(query);
   return rows;
 };
 
-const getUser = async (id) => {
-  let query = "SELECT * FROM user_list WHERE user_id = $1;";
-  const { rows } = await pool.query(query, [id]);
+const user = async (userId) => {
+  let query =
+    "SELECT * FROM user_list WHERE user_id = $1 AND user_status = true;";
+  const { rows } = await pool.query(query, [userId]);
   return rows;
 };
 
-const getUserByEmail = async (email) => {
-  let query = "SELECT * FROM user_list WHERE email = $1;";
+const userByEmail = async (email) => {
+  let query =
+    "SELECT * FROM user_list WHERE email = $1 AND user_status = true;";
   const { rows } = await pool.query(query, [email]);
   return rows;
 };
 
-export { getUser, getUserByEmail, getUsers };
+export { user, usersList, userByEmail };

@@ -1,6 +1,6 @@
 import { body, validationResult } from "express-validator";
 
-const saleFormValidation = [
+const processFormValidation = [
   body("sec_mobile")
     .trim()
     .isInt()
@@ -52,6 +52,11 @@ const saleFormValidation = [
     .toDate()
     .notEmpty()
     .withMessage("sale date is required"),
+  body("follwup_date")
+    .trim()
+    .toDate()
+    .notEmpty()
+    .withMessage("Follow Up date is required"),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -61,4 +66,4 @@ const saleFormValidation = [
   },
 ];
 
-export default saleFormValidation;
+export default processFormValidation;

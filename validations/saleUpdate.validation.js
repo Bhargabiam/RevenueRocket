@@ -1,25 +1,15 @@
 import { body, validationResult } from "express-validator";
 
-const saleFormValidation = [
+const saleUpdateFormValidation = [
   body("sec_mobile")
     .trim()
     .isInt()
     .optional()
     .withMessage("Wrong Mobile Number"),
-  body("customer_type")
-    .trim()
-    .isIn(["New", "Old"])
-    .withMessage("Field value must be 'New' or 'Old'"),
   body("metal_type")
     .trim()
     .isIn(["Gold", "Diamond"])
     .withMessage("Field value must be 'Gold' or 'Diamond'"),
-  body("walkin_source")
-    .trim()
-    .isString()
-    .withMessage("Walkin source must be a string")
-    .notEmpty()
-    .withMessage("Walkin Source Field is required"),
   body("executive_name")
     .trim()
     .notEmpty()
@@ -52,6 +42,11 @@ const saleFormValidation = [
     .toDate()
     .notEmpty()
     .withMessage("sale date is required"),
+  body("follwup_date")
+    .trim()
+    .toDate()
+    .notEmpty()
+    .withMessage("followup date is required"),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -61,4 +56,4 @@ const saleFormValidation = [
   },
 ];
 
-export default saleFormValidation;
+export default saleUpdateFormValidation;
