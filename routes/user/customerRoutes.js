@@ -4,7 +4,7 @@ import {
   getCustomerData,
   customerMobile,
   newCustomer,
-} from "../../controllers/customer/customerController.js";
+} from "../../controllers/user/customerController.js";
 
 const router = express.Router();
 

@@ -4,7 +4,7 @@ import {
   getExecutiveList,
   createExecutive,
   deleteExecutive,
-} from "../../controllers/executive/executive.controller.js";
+} from "../../controllers/user/executive.controller.js";
 import { executiveIdValidator } from "../../validations/Id.validation.js";
 const router = express.Router();
 

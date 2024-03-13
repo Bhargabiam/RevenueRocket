@@ -3,7 +3,7 @@ import {
   productsList,
   newProduct,
   deleteProductQuery,
-} from "../../db/product/productQuery.js";
+} from "../../db/user/productQuery.js";
 
 const getProduct = async (req, res) => {
   const productId = req.query.productId;

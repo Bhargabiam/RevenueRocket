@@ -8,7 +8,7 @@ import {
   newSaleData,
   processLimitedData,
   inprocessToSale,
-} from "../../controllers/sales/salesController.js";
+} from "../../controllers/user/salesController.js";
 import {
   customerIdValidator,
   processIdValidator,

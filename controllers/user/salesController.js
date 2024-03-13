@@ -8,8 +8,8 @@ import {
   addSaleData,
   processLimitData,
   processToSale,
-} from "../../db/sales/salesQuery.js";
-import { customerByMobile } from "../../db/customer/customerQuery.js";
+} from "../../db/user/salesQuery.js";
+import { customerByMobile } from "../../db/user/customerQuery.js";
 
 const processDataByMobile = async (req, res) => {
   const mobile = req.query.mobile;

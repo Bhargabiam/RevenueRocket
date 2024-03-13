@@ -3,7 +3,7 @@ import {
   getCustomer,
   customerByMobile,
   addNewCustomer,
-} from "../../db/customer/customerQuery.js";
+} from "../../db/user/customerQuery.js";
 
 const customerList = async (req, res, next) => {
   try {

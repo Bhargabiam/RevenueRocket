@@ -3,7 +3,7 @@ import {
   executiveListQuery,
   newExecutiveQuery,
   deleteExecutiveQuery,
-} from "../../db/executive/executiveQuerys.js";
+} from "../../db/user/executiveQuerys.js";
 
 const getExecutive = async (req, res) => {
   const executiveId = req.query.executiveId;

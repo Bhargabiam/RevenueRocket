@@ -4,7 +4,7 @@ import {
   productList,
   createProduct,
   deleteProduct,
-} from "../../controllers/product/product.controller.js";
+} from "../../controllers/user/product.controller.js";
 import { productIdValidator } from "../../validations/Id.validation.js";
 
 const router = express.Router();
