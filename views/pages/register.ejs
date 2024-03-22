@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html dir="ltr">
+  <head>
+    <%- include('../layouts/head') %>
+  </head>
+
+  <body>
+    <div class="main-wrapper">
+      <!-- ============================================================== -->
+      <!-- Preloader - style you can find in spinners.css -->
+      <!-- ============================================================== -->
+      <div class="preloader">
+        <div class="lds-ripple">
+          <div class="lds-pos"></div>
+          <div class="lds-pos"></div>
+        </div>
+      </div>
+      <!-- ============================================================== -->
+      <!-- Preloader - style you can find in spinners.css -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Login box.scss -->
+      <!-- ============================================================== -->
+      <div
+        class="auth-wrapper d-flex no-block justify-content-center align-items-center"
+        style="
+          background: url(/public/uploads/profiles/register.jpg) no-repeat
+            center;
+        "
+      >
+        <div class="auth-box on-sidebar">
+          <div>
+            <div class="logo">
+              <span class="db"
+                ><img src="/public/assets/images/logo-icon.png" alt="logo"
+              /></span>
+              <h5 class="font-medium m-b-20">Sign Up</h5>
+            </div>
+            <!-- Form -->
+            <div class="row">
+              <div class="col-12">
+                <form id="register-form" class="form-horizontal m-t-20">
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <input
+                        class="form-control form-control-lg"
+                        type="text"
+                        id="name"
+                        placeholder="Name"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <input
+                        class="form-control form-control-lg"
+                        type="email"
+                        id="email"
+                        placeholder="Email"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <input
+                        class="form-control form-control-lg"
+                        type="password"
+                        id="password"
+                        placeholder="Password"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <input
+                        class="form-control form-control-lg"
+                        type="password"
+                        id="re-password"
+                        placeholder="Confirm Password"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <select id="roll" class="form-control form-control-lg">
+                        <option value="Admin">Admin</option>
+                        <option value="Manegment">Manegment</option>
+                        <option selected value="User">User</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- <div class="form-group row">
+                    <div class="col-12">
+                      <input
+                        type="file"
+                        class="form-control form-control-lg"
+                        id="profile"
+                        accept="image/*"
+                        placeholder="Profile Picture"
+                      />
+                    </div>
+                  </div> -->
+                  <!-- <div class="form-group row">
+                    <div class="col-md-12">
+                      <div class="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="customCheck1"
+                        />
+                        <label class="custom-control-label" for="customCheck1"
+                          >I agree to all
+                          <a href="javascript:void(0)">Terms</a></label
+                        >
+                      </div>
+                    </div>
+                  </div> -->
+                  <div class="form-group text-center">
+                    <div class="col-xs-12 p-b-20">
+                      <button
+                        id="submit-btn"
+                        class="btn btn-block btn-lg btn-info"
+                        type="submit "
+                      >
+                        SIGN UP
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-group m-b-0 m-t-10">
+                    <div class="col-sm-12 text-center">
+                      Already have an account?
+                      <a href="/login" class="text-info m-l-5"
+                        ><b>Sign In</b></a
+                      >
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ============================================================== -->
+      <!-- Login box.scss -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Page wrapper scss in scafholding.scss -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Page wrapper scss in scafholding.scss -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Right Sidebar -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Right Sidebar -->
+      <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- All Required js -->
+    <!-- ============================================================== -->
+    <script src="/public/assets/libs/jquery/dist/jquery.min.js "></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="/public/assets/libs/popper.js/dist/umd/popper.min.js "></script>
+    <script src="/public/assets/libs/bootstrap/dist/js/bootstrap.min.js "></script>
+    <!-- ============================================================== -->
+    <!-- This page plugin js -->
+    <!-- ============================================================== -->
+    <script>
+      $('[data-toggle="tooltip "]').tooltip();
+      $(".preloader ").fadeOut();
+
+      $("document").ready(() => {
+        $("#register-form").on("submit", async (e) => {
+          e.preventDefault();
+          const formData = {
+            name: $("#name").val(),
+            email: $("#email").val(),
+            password: $("#password").val(),
+            roll: $("#roll").val(),
+          };
+
+          if (await passwordCheck(formData.password, $("#re-password").val())) {
+            axios
+              .post("/register", formData)
+              .then((response) => {
+                let user = response.data.newUser.user_name;
+                if (user) {
+                  $("#register-form")[0].reset();
+                }
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          }
+        });
+
+        $("#password, #re-password").on("keydown", () => {
+          $("#password, #re-password").removeClass("is-invalid");
+          $("#submit-btn").removeClass("btn-danger").prop("disabled", false);
+        });
+      });
+      function passwordCheck(password, repassword) {
+        if (password === repassword) {
+          return true;
+        } else {
+          $("#password").addClass("is-invalid");
+          $("#re-password").addClass("is-invalid");
+          $("#submit-btn").addClass("btn-danger").prop("disabled", true);
+          return false;
+        }
+      }
+    </script>
+  </body>
+</html>
